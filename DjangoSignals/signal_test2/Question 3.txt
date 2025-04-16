@@ -1,0 +1,34 @@
+Question 3: By default do django signals run in the same database transaction as the caller? Please support your answer with a code snippet that conclusively proves your stance. The code does not need to be elegant and production ready, we just need to understand your logic.
+
+
+A) Yes, by default Django signals run inside the same database transaction and thread as the caller. This means, if the signal handler fails (exception), the whole transaction is rolled back.
+
+Code to simulate the same is in
+DjangoSignals\signal_test2\sig3
+
+while test_transaction in
+DjangoSignals\signal_test2\sig3\management\commands
+
+By running 
+python manage.py test_transaction
+from DjangoSignals\signal_test2
+
+
+We will create a Book model.
+
+Add a post_save signal for the model.
+
+Raise an exception inside the signal manually.
+
+Check whether the book gets saved or not.
+
+If the book does not get saved, it confirms the signal is part of the same transaction
+
+If a signal fails, the original .save() (or .create()) is rolled back.
+
+By running the code, we will get to know that the book will not be saved.
+
+Hence, Signals run inside the same database transaction as the caller by default.
+
+
+

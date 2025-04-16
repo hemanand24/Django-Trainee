@@ -1,0 +1,27 @@
+Question 1: By default are django signals executed synchronously or asynchronously? Please support your answer with a code snippet that conclusively proves your stance. The code does not need to be elegant and production ready, we just need to understand your logic.
+
+
+A) Yes, by default Django signals are executed synchronously. That means when a signal is triggered (post_save), the registered receiver functions are executed immediately and wait for the flow to continue until they are done.
+
+Code to simulate the same is in
+DjangoSignals\signal_test\sig1
+
+while test_signal in
+DjangoSignals\signal_test\sig1\management\commands
+
+By running 
+python manage.py test_signal
+from DjangoSignals\signal_test
+
+
+We hence get to know
+
+The Book.objects.create() line triggers the post_save signal.
+   
+If Django signals were asynchronous, the "After save()" log will appear almost instantly without waiting for the signal to finish.
+ 
+But, the time delay between Before save() and After save() will exactly be 5 seconds.
+
+This proves that the signal handler will block the flow.
+
+So yes, Django signals are synchronous by default.
